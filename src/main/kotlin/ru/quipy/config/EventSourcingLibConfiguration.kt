@@ -55,8 +55,8 @@ class EventSourcingLibConfiguration {
     /**
      * Use this object to create/update the aggregate
      */
-    @Bean
-    fun projectEsService() = eventSourcingServiceFactory.create<UUID, ProjectAggregate, ProjectAggregateState>()
+//    @Bean
+//    fun projectEsService() = eventSourcingServiceFactory.create<UUID, ProjectAggregate, ProjectAggregateState>()
 
     @Bean
     fun accountEsService() = eventSourcingServiceFactory.create<UUID, AccountAggregate, AccountAggregateState>()
@@ -64,7 +64,7 @@ class EventSourcingLibConfiguration {
     @PostConstruct
     fun init() {
         // Demonstrates how to explicitly subscribe the instance of annotation based subscriber to some stream. See the [AggregateSubscriptionsManager]
-        subscriptionsManager.subscribe<ProjectAggregate>(projectEventSubscriber)
+//        subscriptionsManager.subscribe<ProjectAggregate>(projectEventSubscriber)
 
         subscriptionsManager.subscribe<AccountAggregate>(projectEventSubscriber)
     }
