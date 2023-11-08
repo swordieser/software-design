@@ -23,31 +23,31 @@ fun AccountAggregateState.deleteBankAccount(BankAccountId: UUID): BankAccountDel
     )
 }
 
-fun AccountAggregateState.deposit(toBankAccountId: UUID, amount: BigDecimal): BankAccountDepositEvent {
-    return BankAccountDepositEvent(
-        accountId = this.getId(),
-        bankAccountId = toBankAccountId,
-        amount = amount
-    )
-}
-
-fun AccountAggregateState.withdraw(fromBankAccountId: UUID, amount: BigDecimal): BankAccountWithdrawalEvent {
-    return BankAccountWithdrawalEvent(
-        accountId = this.getId(),
-        bankAccountId = fromBankAccountId,
-        amount = amount
-    )
-}
-
-fun AccountAggregateState.transferBetweenInternalAccounts(
-    fromBankAccountId: UUID,
-    toBankAccountId: UUID,
-    transferAmount: BigDecimal
-): InternalAccountTransferEvent {
-    return InternalAccountTransferEvent(
-        accountId = this.getId(),
-        bankAccountIdFrom = fromBankAccountId,
-        bankAccountIdTo = toBankAccountId,
-        amount = transferAmount
-    )
-}
+//fun AccountAggregateState.deposit(toBankAccountId: UUID, amount: BigDecimal): BankAccountDepositEvent {
+//    return BankAccountDepositEvent(
+//        accountId = this.getId(),
+//        bankAccountId = toBankAccountId,
+//        amount = amount
+//    )
+//}
+//
+//fun AccountAggregateState.withdraw(fromBankAccountId: UUID, amount: BigDecimal): BankAccountWithdrawalEvent {
+//    return BankAccountWithdrawalEvent(
+//        accountId = this.getId(),
+//        bankAccountId = fromBankAccountId,
+//        amount = amount
+//    )
+//}
+//
+//fun AccountAggregateState.transferBetweenInternalAccounts(
+//    fromBankAccountId: UUID,
+//    toBankAccountId: UUID,
+//    transferAmount: BigDecimal
+//): InternalAccountTransferEvent {
+//    return InternalAccountTransferEvent(
+//        accountId = this.getId(),
+//        bankAccountIdFrom = fromBankAccountId,
+//        bankAccountIdTo = toBankAccountId,
+//        amount = transferAmount
+//    )
+//}
