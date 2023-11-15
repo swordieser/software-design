@@ -53,3 +53,24 @@ fun ProjectAggregateState.assignTagToTask(tagId: UUID, taskId: UUID): TagAssigne
 
     return TagAssignedToTaskEvent(projectId = this.getId(), tagId = tagId, taskId = taskId)
 }
+
+fun ProjectAggregateState.createStatus(name: String): TaskStatusCreatedEvent {
+    if (projectStatuses.values.any { it.name == name }) {
+        throw IllegalArgumentException("Task status already exists: $name")
+    }
+    return TaskStatusCreatedEvent(projectId = this.getId(), statusId = UUID.randomUUID(), statusName = name)
+}
+
+fun ProjectAggregateState.assignStatusToTask(statusId: UUID, taskId: UUID): StatusAssignedToTaskEvent {
+    if (!projectStatuses.containsKey(statusId)) {
+        throw IllegalArgumentException("Tag doesn't exists: $statusId")
+    }
+
+    if (!tasks.containsKey(taskId)) {
+        throw IllegalArgumentException("Task doesn't exists: $taskId")
+    }
+
+    return StatusAssignedToTaskEvent(projectId = this.getId(), statusId = statusId, taskId = taskId)
+}
+
+

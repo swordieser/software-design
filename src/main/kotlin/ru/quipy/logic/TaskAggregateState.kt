@@ -14,7 +14,9 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
     lateinit var updaterId: UUID
     lateinit var title: String
     lateinit var description: String
-    var status: TaskStatus = TaskStatus.CREATED
+    lateinit var performer: UUID
+    lateinit var deadline: Date
+    var deleted: Boolean = false
 
     override fun getId() = taskId
 
@@ -25,33 +27,28 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
         creatorId = event.creatorId
         title = event.title
         description = event.description
+        performer = event.performer
+        deadline= event.deadline
         createdAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun taskTitleUpdatedApply(event: TaskTitleUpdatedEvent) {
-        taskId = event.taskId
         title = event.title
         updaterId = event.updaterId
-        createdAt = event.createdAt
     }
 
-    @StateTransitionFunc
-    fun taskStatusUpdatedApply(event: TaskStatusUpdatedEvent) {
-        taskId = event.taskId
-        status = event.status
-        updaterId = event.updaterId
-        createdAt = event.createdAt
-    }
+//    @StateTransitionFunc
+//    fun taskStatusUpdatedApply(event: TaskStatusUpdatedEvent) {
+//        taskId = event.taskId
+//        status = event.status
+//        updaterId = event.updaterId
+//        createdAt = event.createdAt
+//    }
 
     @StateTransitionFunc
     fun taskDeletedApply(event: TaskDeletedEvent) {
-        taskId = event.taskId
         updaterId = event.userId
-        createdAt = event.createdAt
+        deleted = true
     }
-}
-
-enum class TaskStatus {
-    CREATED, IN_PROGRESS, DONE
 }

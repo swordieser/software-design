@@ -2,7 +2,6 @@ package ru.quipy.logic
 
 import ru.quipy.api.TaskCreatedEvent
 import ru.quipy.api.TaskDeletedEvent
-import ru.quipy.api.TaskStatusUpdatedEvent
 import ru.quipy.api.TaskTitleUpdatedEvent
 import java.util.*
 
@@ -12,7 +11,9 @@ fun TaskAggregateState.create(
     projectId: UUID,
     creatorId: UUID,
     title: String,
-    description: String
+    description: String,
+    performer: UUID,
+    deadline: Date
 ): TaskCreatedEvent {
     return TaskCreatedEvent(
         taskId = id,
@@ -20,7 +21,9 @@ fun TaskAggregateState.create(
         creatorId = creatorId,
         title = title,
         description = description,
-        createdAt = System.currentTimeMillis()
+        createdAt = System.currentTimeMillis(),
+        performer = performer,
+        deadline = deadline
     )
 }
 
@@ -33,19 +36,6 @@ fun TaskAggregateState.updateTaskTitle(
         taskId = id,
         updaterId = updaterId,
         title = title,
-        createdAt = System.currentTimeMillis()
-    )
-}
-
-fun TaskAggregateState.updateTaskStatus(
-    id: UUID,
-    updaterId: UUID,
-    status: TaskStatus,
-): TaskStatusUpdatedEvent {
-    return TaskStatusUpdatedEvent(
-        taskId = id,
-        updaterId = updaterId,
-        status = status,
         createdAt = System.currentTimeMillis()
     )
 }

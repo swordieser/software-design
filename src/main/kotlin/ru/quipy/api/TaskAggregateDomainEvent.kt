@@ -2,7 +2,6 @@ package ru.quipy.api
 
 import ru.quipy.core.annotations.DomainEvent
 import ru.quipy.domain.Event
-import ru.quipy.logic.TaskStatus
 import java.util.*
 
 const val TASK_CREATED_EVENT = "USER_CREATED_EVENT"
@@ -18,6 +17,8 @@ class TaskCreatedEvent(
     val creatorId: UUID,
     val title: String,
     val description: String,
+    val performer: UUID,
+    val deadline: Date,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<TaskAggregate>(
     name = TASK_CREATED_EVENT,
@@ -35,16 +36,16 @@ class TaskTitleUpdatedEvent(
     createdAt = createdAt,
 )
 
-@DomainEvent(name = TASK_STATUS_UPDATED_EVENT)
-class TaskStatusUpdatedEvent(
-    val taskId: UUID,
-    val updaterId: UUID,
-    val status: TaskStatus,
-    createdAt: Long = System.currentTimeMillis(),
-) : Event<TaskAggregate>(
-    name = TASK_STATUS_UPDATED_EVENT,
-    createdAt = createdAt,
-)
+//@DomainEvent(name = TASK_STATUS_UPDATED_EVENT)
+//class TaskStatusUpdatedEvent(
+//    val taskId: UUID,
+//    val updaterId: UUID,
+//    val status: TaskStatus,
+//    createdAt: Long = System.currentTimeMillis(),
+//) : Event<TaskAggregate>(
+//    name = TASK_STATUS_UPDATED_EVENT,
+//    createdAt = createdAt,
+//)
 
 
 @DomainEvent(name = TASK_DELETED_EVENT)
