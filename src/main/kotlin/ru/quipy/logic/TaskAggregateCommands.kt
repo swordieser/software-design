@@ -1,5 +1,6 @@
 package ru.quipy.logic
 
+import ru.quipy.api.SetTaskPerformerEvent
 import ru.quipy.api.TaskCreatedEvent
 import ru.quipy.api.TaskDeletedEvent
 import ru.quipy.api.TaskTitleUpdatedEvent
@@ -39,6 +40,19 @@ fun TaskAggregateState.updateTaskTitle(
         createdAt = System.currentTimeMillis()
     )
 }
+
+fun TaskAggregateState.setTaskPerformer(
+    id: UUID,
+    updaterId: UUID,
+    userId: UUID,
+): SetTaskPerformerEvent {
+    return SetTaskPerformerEvent(
+        taskId = id,
+        userId = userId,
+        createdAt = System.currentTimeMillis()
+    )
+}
+
 
 fun TaskAggregateState.delete(
     id: UUID,

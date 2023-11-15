@@ -63,7 +63,7 @@ fun ProjectAggregateState.createStatus(name: String): TaskStatusCreatedEvent {
 
 fun ProjectAggregateState.assignStatusToTask(statusId: UUID, taskId: UUID): StatusAssignedToTaskEvent {
     if (!projectStatuses.containsKey(statusId)) {
-        throw IllegalArgumentException("Tag doesn't exists: $statusId")
+        throw IllegalArgumentException("Status doesn't exists: $statusId")
     }
 
     if (!tasks.containsKey(taskId)) {
@@ -72,5 +72,10 @@ fun ProjectAggregateState.assignStatusToTask(statusId: UUID, taskId: UUID): Stat
 
     return StatusAssignedToTaskEvent(projectId = this.getId(), statusId = statusId, taskId = taskId)
 }
+
+fun ProjectAggregateState.addUserToProject(userId: UUID): AddUserToProjectEvent {
+    return AddUserToProjectEvent(projectId = this.getId(), userId = userId)
+}
+
 
 
