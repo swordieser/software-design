@@ -1,26 +1,39 @@
 package ru.quipy.logic
 
-import ru.quipy.api.ProjectCreatedEvent
-import ru.quipy.api.TagAssignedToTaskEvent
-import ru.quipy.api.TagCreatedEvent
-import ru.quipy.api.TaskCreatedEvent
+import ru.quipy.api.*
 import java.util.*
 
 
 // Commands : takes something -> returns event
 // Here the commands are represented by extension functions, but also can be the class member functions
 
-fun ProjectAggregateState.create(id: UUID, title: String, creatorId: String): ProjectCreatedEvent {
+fun ProjectAggregateState.create(id: UUID, title: String, description: String, creatorId: UUID): ProjectCreatedEvent {
     return ProjectCreatedEvent(
         projectId = id,
-        title = title,
         creatorId = creatorId,
+        title = title,
+        description = description
     )
 }
 
-fun ProjectAggregateState.addTask(name: String): TaskCreatedEvent {
-    return TaskCreatedEvent(projectId = this.getId(), taskId = UUID.randomUUID(), taskName = name)
+fun ProjectAggregateState.update(title: String, description: String, userId: UUID): ProjectInfoUpdatedEvent {
+    return ProjectInfoUpdatedEvent(
+        userId = userId,
+        title = title,
+        description = description
+    )
 }
+
+
+fun ProjectAggregateState.delete(userId: UUID): ProjectDeletedEvent {
+    return ProjectDeletedEvent(
+        userId = userId,
+    )
+}
+
+//fun ProjectAggregateState.addTask(name: String): TaskCreatedEvent {
+//    return TaskCreatedEvent(projectId = this.getId(), taskId = UUID.randomUUID(), taskName = name)
+//}
 
 fun ProjectAggregateState.createTag(name: String): TagCreatedEvent {
     if (projectTags.values.any { it.name == name }) {
@@ -40,3 +53,29 @@ fun ProjectAggregateState.assignTagToTask(tagId: UUID, taskId: UUID): TagAssigne
 
     return TagAssignedToTaskEvent(projectId = this.getId(), tagId = tagId, taskId = taskId)
 }
+
+fun ProjectAggregateState.createStatus(name: String): TaskStatusCreatedEvent {
+    if (projectStatuses.values.any { it.name == name }) {
+        throw IllegalArgumentException("Task status already exists: $name")
+    }
+    return TaskStatusCreatedEvent(projectId = this.getId(), statusId = UUID.randomUUID(), statusName = name)
+}
+
+fun ProjectAggregateState.assignStatusToTask(statusId: UUID, taskId: UUID): StatusAssignedToTaskEvent {
+    if (!projectStatuses.containsKey(statusId)) {
+        throw IllegalArgumentException("Status doesn't exists: $statusId")
+    }
+
+    if (!tasks.containsKey(taskId)) {
+        throw IllegalArgumentException("Task doesn't exists: $taskId")
+    }
+
+    return StatusAssignedToTaskEvent(projectId = this.getId(), statusId = statusId, taskId = taskId)
+}
+
+fun ProjectAggregateState.addUserToProject(userId: UUID): AddUserToProjectEvent {
+    return AddUserToProjectEvent(projectId = this.getId(), userId = userId)
+}
+
+
+

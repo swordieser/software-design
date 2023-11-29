@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import ru.quipy.api.ProjectAggregate
 import ru.quipy.api.ProjectCreatedEvent
-import ru.quipy.api.TaskCreatedEvent
 import ru.quipy.core.EventSourcingService
 import ru.quipy.logic.ProjectAggregateState
-import ru.quipy.logic.addTask
 import ru.quipy.logic.create
 import java.util.*
 
@@ -22,19 +20,19 @@ class ProjectController(
 ) {
 
     @PostMapping("/{projectTitle}")
-    fun createProject(@PathVariable projectTitle: String, @RequestParam creatorId: String) : ProjectCreatedEvent {
-        return projectEsService.create { it.create(UUID.randomUUID(), projectTitle, creatorId) }
+    fun createProject(@PathVariable projectTitle: String, @RequestParam creatorId: UUID) : ProjectCreatedEvent {
+        return projectEsService.create { it.create(UUID.randomUUID(), projectTitle, "", creatorId) }
     }
 
-    @GetMapping("/{projectId}")
-    fun getAccount(@PathVariable projectId: UUID) : ProjectAggregateState? {
-        return projectEsService.getState(projectId)
-    }
+//    @GetMapping("/{projectId}")
+//    fun getAccount(@PathVariable projectId: UUID) : ProjectAggregateState? {
+//        return projectEsService.getState(projectId)
+//    }
 
-    @PostMapping("/{projectId}/tasks/{taskName}")
-    fun createTask(@PathVariable projectId: UUID, @PathVariable taskName: String) : TaskCreatedEvent {
-        return projectEsService.update(projectId) {
-            it.addTask(taskName)
-        }
-    }
+//    @PostMapping("/{projectId}/tasks/{taskName}")
+//    fun createTask(@PathVariable projectId: UUID, @PathVariable taskName: String) : TaskCreatedEvent {
+//        return projectEsService.update(projectId) {
+//            it.addTask(taskName)
+//        }
+//    }
 }
